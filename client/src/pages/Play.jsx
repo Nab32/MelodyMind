@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import Webcam from 'react-webcam';
 import '../assets/css/Play.css';
 import * as poseDetection from '@tensorflow-models/pose-detection';
@@ -15,6 +15,8 @@ function Play() {
     const webcamRef = useRef(null);
     const canvasRef = useRef(null);
 
+    const [loading, setLoading] = useState(true);
+
     const modelManagerRef = useRef(null);
     const modelRendererRef = useRef(null);
 
@@ -25,7 +27,8 @@ function Play() {
         modelManagerRef.current  = new ModelManager();
         modelRendererRef.current = new ModelRenderer(canvasRef, webcamRef);
         const loadModel = async () => {
-            modelManagerRef.current.loadModel();
+            await modelManagerRef.current.loadModel();
+            setLoading(false);
         };
         loadModel();
         handleFrame();
@@ -43,9 +46,15 @@ function Play() {
             return;
         }
 
+        //Handling frame
+
+        //Get the image from the webcam
         const imageSrc = webcamRef.current.video;
         
-        const poses = await modelManagerRef.current.getKeypoints(["nose", "left_eye", "right_eye","right_wrist"], imageSrc)
+
+        //Get the keypoints from the image
+        const wantedKeypoints = ["nose", "left_eye", "right_eye","right_wrist", "left_wrist"]
+        const poses = await modelManagerRef.current.getKeypoints(wantedKeypoints, imageSrc)
             .then((keypoints) => {
                 if (keypoints) {
                     modelRendererRef.current.renderKeypoints(keypoints, COLORS.BLUE);
@@ -53,7 +62,6 @@ function Play() {
                     console.log("No keypoints found");
                 }
             })
-        
         lastTimestep = timeStep;
 
         requestAnimationFrame(handleFrame);
@@ -68,6 +76,7 @@ function Play() {
 
   return (
     <div>
+        {loading ? <div>Loading...</div> : null}
         <Webcam 
             audio={false}
             height={WEBCAM_HEIGHT}

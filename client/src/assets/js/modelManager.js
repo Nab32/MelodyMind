@@ -3,10 +3,13 @@ import * as tf from '@tensorflow/tfjs-core';
 import '@tensorflow/tfjs-backend-webgl';
 import { MIN_SCORE } from './consts.js';
 
-const detectorConfig = {
+const MODEL_CONFIG = {
     modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING,
     minPoseScore: MIN_SCORE,
+    enableSmoothing: true,
+    multiPoseMaxDimension: 512
 };
+
 
 export default class ModelManager {
     constructor() {
@@ -21,7 +24,7 @@ export default class ModelManager {
         await tf.setBackend('webgl');
         this.model = await poseDetection.createDetector(
             poseDetection.SupportedModels.MoveNet,
-            detectorConfig
+            MODEL_CONFIG
         );
     };
 

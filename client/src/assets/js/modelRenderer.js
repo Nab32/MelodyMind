@@ -7,7 +7,6 @@ export default class ModelRenderer {
         this.webcam = webcamRef.current;
     }
 
-
     /*
     * Render the video of camera
     * */    
@@ -44,10 +43,6 @@ export default class ModelRenderer {
                 this.renderKeypoint(keypoint, color);
             }
         });
-    }
-
-    async antiShaking() {
-        
     }
 }
 

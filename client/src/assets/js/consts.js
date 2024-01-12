@@ -16,3 +16,4 @@ export const COLORS = {
 export const MIN_SCORE = 0.1;
 
 export const FPS = 30;
+
