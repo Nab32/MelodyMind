@@ -4,8 +4,5 @@
 }
 
 canvas {
-    position: absolute;
-    top: 8px;
-    left: 8px;
     width: 640px;
 }   
