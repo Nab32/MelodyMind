@@ -1,9 +1,11 @@
 import * as poseDetection from '@tensorflow-models/pose-detection';
 import * as tf from '@tensorflow/tfjs-core';
 import '@tensorflow/tfjs-backend-webgl';
+import { MIN_SCORE } from './consts.js';
 
 const detectorConfig = {
-    modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING
+    modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING,
+    minPoseScore: MIN_SCORE,
 };
 
 export default class ModelManager {

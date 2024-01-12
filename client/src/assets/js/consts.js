@@ -1,5 +1,5 @@
-export const WEBCAM_WIDTH = 1280;
-export const WEBCAM_HEIGHT = 720;
+export const WEBCAM_WIDTH = 640;
+export const WEBCAM_HEIGHT = 480;
 
 export const COLORS = {
     RED: '#FF0000',
@@ -12,3 +12,7 @@ export const COLORS = {
     CYAN: '#00FFFF',
     ORANGE: '#FFA500',
 }
+
+export const MIN_SCORE = 0.1;
+
+export const FPS = 30;

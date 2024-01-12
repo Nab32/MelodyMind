@@ -6,7 +6,8 @@ import * as tf from '@tensorflow/tfjs-core';
 import '@tensorflow/tfjs-backend-webgl';
 import ModelManager from '../assets/js/modelManager';
 import ModelRenderer from '../assets/js/modelRenderer';
-import { WEBCAM_HEIGHT, WEBCAM_WIDTH } from '../assets/js/consts';
+import { WEBCAM_HEIGHT, WEBCAM_WIDTH, COLORS, FPS } from '../assets/js/consts';
+
 
 function Play() {
 
@@ -16,6 +17,9 @@ function Play() {
 
     const modelManagerRef = useRef(null);
     const modelRendererRef = useRef(null);
+
+    let lastTimestep = 0;
+    
 
     useEffect(() => {
         modelManagerRef.current  = new ModelManager();
@@ -27,20 +31,31 @@ function Play() {
         handleFrame();
     });
 
-
-    const handleFrame = async () => {
+    /* Handles the frame */
+    const handleFrame = async (timeStep) => {
         //Gives us the URL to image
+
+        const elapsedMS = timeStep - lastTimestep;
+        const elapsedSeconds = elapsedMS / 1000.0;
+
+        if (elapsedSeconds < 1.0 / FPS) {
+            requestAnimationFrame(handleFrame);
+            return;
+        }
+
         const imageSrc = webcamRef.current.video;
         
-        const nose = await modelManagerRef.current.getKeypoints(["nose", "left_eye"], imageSrc)
+        const poses = await modelManagerRef.current.getKeypoints(["nose", "left_eye", "right_eye","right_wrist"], imageSrc)
             .then((keypoints) => {
                 if (keypoints) {
-                    console.log(keypoints);
-                    modelRendererRef.current.renderCameraImage();
+                    modelRendererRef.current.renderKeypoints(keypoints, COLORS.BLUE);
                 } else {
-                    console.log("No nose found");
+                    console.log("No keypoints found");
                 }
             })
+        
+        lastTimestep = timeStep;
+
         requestAnimationFrame(handleFrame);
     }
 
