@@ -11,13 +11,28 @@ function Play() {
 
     const modelManager = new ModelManager();
     const webcamRef = useRef(null);
+    const canvasRef = useRef(null);
     
 
     const handleFrame = async () => {
         //Gives us the URL to image
         const imageSrc = webcamRef.current.video;
-        const poses = modelManager.estimatePoseOnImage(imageSrc)
-            .then((poses) => {console.log(poses[0])});
+        const imageData = webcamRef.current.getScreenshot({width: WEBCAM_WIDTH, height: WEBCAM_HEIGHT});
+        const base_image = new Image();
+        base_image.src = imageData;
+
+        const ctx = canvasRef.current.getContext("2d");
+        ctx.fillStyle = "orange";
+        
+        const nose = await modelManager.getKeypoint("nose", imageSrc)
+            .then((noses) => {
+                if (noses) {
+                    console.log(noses);
+                    ctx.fillRect(noses.x, noses.y, 20, 20);
+                } else {
+                    console.log("No nose found");
+                }
+            })
         requestAnimationFrame(handleFrame);
     }
 
@@ -29,6 +44,8 @@ function Play() {
 
     useEffect(() => {
         modelManager.loadModel();
+
+        var ctx = canvasRef.current.getContext("2d");
         requestAnimationFrame(handleFrame);
     });
 
@@ -43,6 +60,7 @@ function Play() {
             className="webcam"
             ref={webcamRef}
         />
+        <canvas ref={canvasRef} height={WEBCAM_HEIGHT} width={WEBCAM_WIDTH} id="canvas" className="canvas"></canvas>
     </div>
   )
 }

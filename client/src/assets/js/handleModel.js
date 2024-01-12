@@ -11,6 +11,10 @@ export default class ModelManager {
         this.model = null;
     }
 
+    /*
+    * Load the model
+    * @returns {Promise}
+    * */
     async loadModel() {
         await tf.setBackend('webgl');
         this.model = await poseDetection.createDetector(
@@ -19,11 +23,41 @@ export default class ModelManager {
         );
     };
 
+    /*
+    * Estimate pose on an image
+    * @param {HTMLImageElement} imageElement - image to estimate pose on
+    * @returns {Object} - pose object
+    * */
     async estimatePoseOnImage(imageElement) {
         if (!this.model) {
-            return "Model not loaded";
+            return null;
         }
         const result = await this.model.estimatePoses(imageElement);
-        return result;
+        return result[0];
+    }
+
+
+    /*
+    * Get a keypoint from an image (TODO)
+    * @param {String} keypoint - keypoint to get
+    * @param {HTMLImageElement} imageElement - image to get keypoint from
+    * @returns {Object} - keypoint object
+    *  */
+    async getKeypoint(poseElement, imageElement) {
+        const poses = await this.estimatePoseOnImage(imageElement);
+
+        if (!poses || !poses.keypoints) {
+            return null;
+        }
+
+        const keypoints = poses.keypoints;
+
+        const foundKeypoint = keypoints.find((keypoint) => keypoint.name === poseElement);
+
+        if (foundKeypoint) {
+            return foundKeypoint;
+        } else {
+            return null;
+        }
     }
 }
