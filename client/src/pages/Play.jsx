@@ -53,7 +53,7 @@ function Play() {
         
 
         //Get the keypoints from the image
-        const wantedKeypoints = ["nose", "left_eye", "right_eye","right_wrist", "left_wrist"]
+        const wantedKeypoints = ["nose", "right_wrist", "left_wrist", "left_elbow", "right_elbow", "left_shoulder", "right_shoulder", "left_hip", "right_hip", "left_knee", "right_knee"];
         const poses = await modelManagerRef.current.getKeypoints(wantedKeypoints, imageSrc)
             .then((keypoints) => {
                 if (keypoints) {
