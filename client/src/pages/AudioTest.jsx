@@ -5,8 +5,12 @@ import { SplendidGrandPiano, Soundfont } from "smplr";
 
 function AudioTest() {
     const context = new AudioContext();
-    const tempo = 120;
-
+    var tempo = 80;
+    var harpAllowed = true;
+    var elecPianoAllowed = true;
+    var acGuitarAllowed = true;
+    var ensembleAllowed = true;
+    var padsAllowed = true;
 
     //Track 2
     const harp = new Soundfont(context, {
@@ -20,7 +24,7 @@ function AudioTest() {
 
     //track3
     const elecPiano = new Soundfont(context, {
-        instrument: "electric_grand_piano"
+        instrument: "electric_grand_piano",
     });
 
     elecPiano.load.then(() => {
@@ -40,7 +44,7 @@ function AudioTest() {
     
     //track 5
     const ensemble1 = new Soundfont(context, {
-        instrument: "synth_strings_1"
+        instrument: "synth_strings_1",
     });
 
     ensemble1.load.then(() => {
@@ -50,7 +54,8 @@ function AudioTest() {
 
     //track 6
     const pads = new Soundfont(context, {
-        instrument: "pad_2_warm"
+        instrument: "pad_2_warm",
+        kit: "FluidR3_GM"
     });
 
     pads.load.then(() => {
@@ -60,18 +65,26 @@ function AudioTest() {
 
 
     var Player = new MidiPlayer.Player(function(event) {
+        pads.output.setVolume(40);
+        acGuitar.output.setVolume(70);
+        ensemble1.output.setVolume(65);
+        elecPiano.output.setVolume(70);
+        harp.output.setVolume(80);
+
+        Player.tempo = tempo;
+
+
         if (event.name == "Note on") {
-            if (event.track == 2){
-                harp.start({note: event.noteName,time: context.currentTime, velocity: event.velocity});
-            } else if (event.track == 3){
-                elecPiano.start({note: event.noteName,time: context.currentTime, velocity: event.velocity});
-            } else if (event.track == 4 || event.track == 7){
-                acGuitar.start({note: event.noteName,time: context.currentTime, velocity: event.velocity});
-            } else if (event.track == 5){
-                pads.start({note: event.noteName,time: context.currentTime, velocity: event.velocity});
-                
-            } else if (event.track == 6){
-                ensemble1.start({note: event.noteName,time: context.currentTime, velocity: event.velocity});
+            if (event.track == 3 && harpAllowed){
+                harp.start({note: event.noteName,time: context.currentTime, velocity: event.velocity, duration: 0.375});
+            } else if (event.track == 4 && elecPianoAllowed){
+                elecPiano.start({note: event.noteName,time: context.currentTime, velocity: event.velocity, duration: 1.5});
+            } else if (event.track == 6 && ensembleAllowed){
+                ensemble1.start({note: event.noteName,time: context.currentTime, velocity: event.velocity, duration: 3});
+            } else if (event.track == 7 && padsAllowed){
+                pads.start({note: event.noteName,time: context.currentTime, velocity: event.velocity, duration: 3});
+            } else if ((event.track == 8 || event.track == 5) && acGuitarAllowed){
+                acGuitar.start({note: event.noteName,time: context.currentTime, velocity: event.velocity, duration: 0.75});
             }
         }
     });
@@ -99,7 +112,6 @@ function AudioTest() {
 
 
     Player.on('midiEvent', function(event) {
-        console.log(event);
     });
 
     const stop = () => {
@@ -115,6 +127,14 @@ function AudioTest() {
         <button onClick={() => play()}>Play</button>
         <button onClick={() => stop()}>Stop</button>
         <button onClick={() => tempo - 10}>Lower Tempo</button>
+        <button onClick={() => {
+            padsAllowed = false
+            pads.stop();
+        }}>Remove pads</button>
+        <button onClick={() => ensembleAllowed = false}>Remove ensemble</button>
+        <button onClick={() => acGuitarAllowed = false}>Remove guitar</button>
+        <button onClick={() => elecPianoAllowed = false}>Remove piano</button>
+        <button onClick={() => harpAllowed = false}>Remove harp</button>
     </div>
   )
 }

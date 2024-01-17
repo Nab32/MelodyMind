@@ -1,1 +1,3 @@
 https://github.com/tensorflow/tfjs-models/tree/master/pose-detection
+https://www.npmjs.com/package/midi-player-js
+https://github.com/danigb/smplr

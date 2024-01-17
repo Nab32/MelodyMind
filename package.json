@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@stellarogs/tonejs-instruments": "^1.0.0"
+  }
+}

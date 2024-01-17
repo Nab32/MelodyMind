@@ -59,7 +59,7 @@ export default class ModelRenderer {
             }
         });
         this.renderSkeleton(keypointList, color);
-        this.renderFace(keypointList);
+        //this.renderFace(keypointList);
     }
 
     async renderSkeleton(keypointList, color) {

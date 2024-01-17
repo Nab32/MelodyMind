@@ -6,6 +6,7 @@ import * as tf from '@tensorflow/tfjs-core';
 import '@tensorflow/tfjs-backend-webgl';
 import ModelManager from '../assets/js/modelManager';
 import ModelRenderer from '../assets/js/modelRenderer';
+import AudioManager from '../assets/js/audioManager';
 import { WEBCAM_HEIGHT, WEBCAM_WIDTH, COLORS, FPS } from '../assets/js/consts';
 
 
@@ -14,11 +15,13 @@ function Play() {
     
     const webcamRef = useRef(null);
     const canvasRef = useRef(null);
+    var test = 0;
 
     const [loading, setLoading] = useState(true);
 
     const modelManagerRef = useRef(null);
     const modelRendererRef = useRef(null);
+    const audioManagerRef = useRef(null);
 
     let lastTimestep = 0;
     
@@ -26,18 +29,22 @@ function Play() {
     useEffect(() => {
         modelManagerRef.current  = new ModelManager();
         modelRendererRef.current = new ModelRenderer(canvasRef, webcamRef);
+        audioManagerRef.current = new AudioManager();
         const loadModel = async () => {
             await modelManagerRef.current.loadModel();
             setLoading(false);
         };
         loadModel();
+        audioManagerRef.current.loadSong("/overworldZelda.mid");
         handleFrame();
     });
 
     /* Handles the frame */
     const handleFrame = async (timeStep) => {
-        //Gives us the URL to image
-
+        test++;
+        if (test % 200 == 0) {
+            console.log("yep");
+        }
         const elapsedMS = timeStep - lastTimestep;
         const elapsedSeconds = elapsedMS / 1000.0;
 
@@ -87,6 +94,7 @@ function Play() {
             ref={webcamRef}
         />
         <canvas ref={canvasRef} height={WEBCAM_HEIGHT} width={WEBCAM_WIDTH} id="canvas" className="canvas"></canvas>
+        <button onClick={() => audioManagerRef.current.play()}>Play audio</button>
     </div>
   )
 }
