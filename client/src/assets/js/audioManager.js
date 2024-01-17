@@ -4,10 +4,11 @@ import { SplendidGrandPiano, Soundfont } from "smplr";
 export default class AudioManager {
     constructor() {
         this.player = new MidiPlayer.Player(function(event) {
-            console.log(event);
+            //console.log(event);
         });
         this.context = new AudioContext();
         this.loadInstruments();
+        this.tempo = 120;
         
         this.player.on('fileLoaded', function() {
             console.log("FILE WAS LOADED")
@@ -16,6 +17,7 @@ export default class AudioManager {
         this.player.on('midiEvent', (event) => {
             this.trombone.output.setVolume(127);
             this.trombone2.output.setVolume(127);
+
             if (event.name == "Note on"){
                 if (event.track == 2){
                     this.electricPiano.start({note: event.noteNumber, time: this.context.currentTime, velocity: event.velocity});
@@ -65,8 +67,12 @@ export default class AudioManager {
         this.electricPiano = new Soundfont(this.context, {
             instrument: "electric_grand_piano"
         })
+        this.pianoVolume = 100;
+        this.tenorVolume = 100;
+        this.drumsVolume = 100;
         this.electricPiano.load.then(() => {
             console.log("Electric Piano loaded");
+            this.electricPiano.output.setVolume(this.pianoVolume)
         });
 
         this.mutedTrumpet = new Soundfont(this.context, {
@@ -129,5 +135,17 @@ export default class AudioManager {
                 this.player.loadArrayBuffer(arrayBuffer);
         })
     }
-    
+
+    changeAudio(percentage) {
+        this.electricPiano.output.setVolume(this.pianoVolume * percentage);
+        this.tenorSaxophone.output.setVolume(this.tenorVolume * percentage);
+        this.synthDrums.output.setVolume(this.drumsVolume * percentage);
+    }
+
+
+    setTempo(tempo) {
+        this.player.pause();
+        this.player.tempo = tempo;
+        this.player.play();
+    }
 }

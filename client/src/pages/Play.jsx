@@ -16,9 +16,9 @@ function Play() {
     const webcamRef = useRef(null);
     const canvasRef = useRef(null);
     var test = 0;
-
     const [loading, setLoading] = useState(true);
-
+    const [tempo, setTempo] = useState(70);
+    const [playing, setPlaying] = useState(false);
     const modelManagerRef = useRef(null);
     const modelRendererRef = useRef(null);
     const audioManagerRef = useRef(null);
@@ -37,14 +37,26 @@ function Play() {
         loadModel();
         audioManagerRef.current.loadSong("/overworldZelda.mid");
         handleFrame();
-    });
+    }, []);
+
+    //Play at random tempo
+    useEffect(() => {
+        if (playing){
+            const intervalId = setInterval(() => {
+                console.log(tempo);
+                const randomValue = Math.random() * 100 + 40;
+                setTempo(parseInt(randomValue));
+                audioManagerRef.current.setTempo(tempo);
+              }, 500); // 200 milliseconds interval (5 times per second)
+          
+              // Cleanup function to clear the interval when the component is unmounted
+              return () => clearInterval(intervalId);      
+        }
+      }, [tempo, playing]);
+
 
     /* Handles the frame */
     const handleFrame = async (timeStep) => {
-        test++;
-        if (test % 200 == 0) {
-            console.log("yep");
-        }
         const elapsedMS = timeStep - lastTimestep;
         const elapsedSeconds = elapsedMS / 1000.0;
 
@@ -54,6 +66,8 @@ function Play() {
         }
 
         //Handling frame
+
+        //audioManagerRef.current.setTempo(tempo);
 
         //Get the image from the webcam
         const imageSrc = webcamRef.current.video;
@@ -94,7 +108,13 @@ function Play() {
             ref={webcamRef}
         />
         <canvas ref={canvasRef} height={WEBCAM_HEIGHT} width={WEBCAM_WIDTH} id="canvas" className="canvas"></canvas>
-        <button onClick={() => audioManagerRef.current.play()}>Play audio</button>
+        <button onClick={() => {
+            audioManagerRef.current.play()
+            setPlaying(true);
+        }}>Play audio</button>
+        <button onClick={() => audioManagerRef.current.setTempo(60)}>Set tempo</button>
+        <button onClick={() => audioManagerRef.current.setTempo(170)}>up tempo</button>
+        <button onClick={() => setTempo(tempo+1)}>Test</button>
     </div>
   )
 }

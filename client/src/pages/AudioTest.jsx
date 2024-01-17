@@ -65,6 +65,7 @@ function AudioTest() {
 
 
     var Player = new MidiPlayer.Player(function(event) {
+        console.log(event);
         pads.output.setVolume(40);
         acGuitar.output.setVolume(70);
         ensemble1.output.setVolume(65);
@@ -75,16 +76,29 @@ function AudioTest() {
 
 
         if (event.name == "Note on") {
+            if (event.velocity == 0){
+                if (event.track == 3 && harpAllowed){
+                    harp.stop({note: event.noteName,time: context.currentTime});
+                } else if (event.track == 4 && elecPianoAllowed){
+                    elecPiano.stop({note: event.noteName,time: context.currentTime});
+                } else if (event.track == 6 && ensembleAllowed){
+                    ensemble1.stop({note: event.noteName,time: context.currentTime});
+                } else if (event.track == 7 && padsAllowed){
+                    pads.stop({note: event.noteName,time: context.currentTime});
+                } else if ((event.track == 8 || event.track == 5) && acGuitarAllowed){
+                    acGuitar.stop({note: event.noteName,time: context.currentTime});
+                }
+            } 
             if (event.track == 3 && harpAllowed){
-                harp.start({note: event.noteName,time: context.currentTime, velocity: event.velocity, duration: 0.375});
+                harp.start({note: event.noteName,time: context.currentTime, velocity: event.velocity});
             } else if (event.track == 4 && elecPianoAllowed){
-                elecPiano.start({note: event.noteName,time: context.currentTime, velocity: event.velocity, duration: 1.5});
+                elecPiano.start({note: event.noteName,time: context.currentTime, velocity: event.velocity});
             } else if (event.track == 6 && ensembleAllowed){
-                ensemble1.start({note: event.noteName,time: context.currentTime, velocity: event.velocity, duration: 3});
+                ensemble1.start({note: event.noteName,time: context.currentTime, velocity: event.velocity});
             } else if (event.track == 7 && padsAllowed){
-                pads.start({note: event.noteName,time: context.currentTime, velocity: event.velocity, duration: 3});
+                pads.start({note: event.noteName,time: context.currentTime, velocity: event.velocity});
             } else if ((event.track == 8 || event.track == 5) && acGuitarAllowed){
-                acGuitar.start({note: event.noteName,time: context.currentTime, velocity: event.velocity, duration: 0.75});
+                acGuitar.start({note: event.noteName,time: context.currentTime, velocity: event.velocity});
             }
         }
     });
