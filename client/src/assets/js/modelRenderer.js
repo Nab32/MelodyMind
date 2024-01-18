@@ -59,7 +59,7 @@ export default class ModelRenderer {
             }
         });
         this.renderSkeleton(keypointList, color);
-        //this.renderFace(keypointList);
+        this.renderFace(keypointList);
     }
 
     async renderSkeleton(keypointList, color) {
@@ -85,7 +85,6 @@ export default class ModelRenderer {
         faceImage.src = 'https://www.musicologie.org/Biographies/m/mozart.jpg';
         if (faceCoords && faceCoords.score > MIN_SCORE) {
             this.ctx.drawImage(faceImage, faceCoords.x - 100, faceCoords.y - 100, 150, 150);
-            console.log("test");
         }
     }
 }

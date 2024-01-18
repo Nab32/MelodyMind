@@ -16,6 +16,7 @@ function Play() {
     const webcamRef = useRef(null);
     const canvasRef = useRef(null);
     var test = 0;
+    const wantedKeypoints = ["nose", "right_wrist", "left_wrist", "left_elbow", "right_elbow", "left_shoulder", "right_shoulder", "left_hip", "right_hip", "left_knee", "right_knee"];
     const [loading, setLoading] = useState(true);
     const [tempo, setTempo] = useState(70);
     const [playing, setPlaying] = useState(false);
@@ -43,10 +44,14 @@ function Play() {
     useEffect(() => {
         if (playing){
             const intervalId = setInterval(() => {
+                const imageSrc = webcamRef.current.video;
+                modelManagerRef.current.getKeypoints(wantedKeypoints, webcamRef.current.video).then((keypoints) => {
+                    console.log(keypoints);
+                });
                 console.log(tempo);
-                const randomValue = Math.random() * 100 + 40;
+                const randomValue = Math.random() * 60 + 100;
                 setTempo(parseInt(randomValue));
-                audioManagerRef.current.setTempo(tempo);
+                //audioManagerRef.current.setTempo(tempo);
               }, 500); // 200 milliseconds interval (5 times per second)
           
               // Cleanup function to clear the interval when the component is unmounted
@@ -74,7 +79,7 @@ function Play() {
         
 
         //Get the keypoints from the image
-        const wantedKeypoints = ["nose", "right_wrist", "left_wrist", "left_elbow", "right_elbow", "left_shoulder", "right_shoulder", "left_hip", "right_hip", "left_knee", "right_knee"];
+        
         const poses = await modelManagerRef.current.getKeypoints(wantedKeypoints, imageSrc)
             .then((keypoints) => {
                 if (keypoints) {

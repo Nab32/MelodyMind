@@ -1,8 +1,9 @@
 .webcam {
-    width: 500;
+    width: 0;
     height: 100%;
 }
 
 canvas {
     width: 500px;
+    background-color: violet;
 }
