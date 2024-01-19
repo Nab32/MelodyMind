@@ -1,5 +1,6 @@
 import MidiPlayer from 'midi-player-js';
 import { SplendidGrandPiano, Soundfont } from "smplr";
+import data from "../data/songs.json"
 
 export default class AudioManager {
     constructor() {
@@ -7,50 +8,21 @@ export default class AudioManager {
             //console.log(event);
         });
         this.context = new AudioContext();
-        this.loadInstruments();
-        this.tempo = 120;
         
         this.player.on('fileLoaded', function() {
-            console.log("FILE WAS LOADED")
+            console.log("FILE WAS LOADED");
         })
 
         this.player.on('midiEvent', (event) => {
-            this.trombone.output.setVolume(127);
-            this.trombone2.output.setVolume(127);
-
-            if (event.name == "Note on"){
-                if (event.track == 2){
-                    this.electricPiano.start({note: event.noteNumber, time: this.context.currentTime, velocity: event.velocity});
-                } else if (event.track == 3) {
-                    this.mutedTrumpet.start({note: event.noteNumber, time: this.context.currentTime, velocity: event.velocity});
-                } else if (event.track == 4) {
-                    this.trombone.start({note: event.noteNumber, time: this.context.currentTime, velocity: event.velocity});
-                    this.trombone2.start({note: event.noteNumber, time: this.context.currentTime, velocity: event.velocity});
-                } else if (event.track == 5) {
-                    this.tenorSaxophone.start({note: event.noteNumber, time: this.context.currentTime, velocity: event.velocity});
-                } else if (event.track == 6) {
-                    this.electricBass.start({note: event.noteNumber, time: this.context.currentTime, velocity: event.velocity});
-                } else if (event.track == 7) {
-                    this.electricGuitar.start({note: event.noteNumber, time: this.context.currentTime, velocity: event.velocity});
-                } else if (event.track == 8) {
-                    this.synthDrums.start({note: event.noteNumber, time: this.context.currentTime, velocity: event.velocity});
-                }
-            } else if (event.name == "Note off"){
-                if (event.track == 2){
-                    this.electricPiano.stop({note: event.noteNumber, time: this.context.currentTime});
-                } else if (event.track == 3) {
-                    this.mutedTrumpet.stop({note: event.noteNumber, time: this.context.currentTime});
-                } else if (event.track == 4) {
-                    this.trombone.stop({note: event.noteNumber, time: this.context.currentTime});
-                    this.trombone2.stop({note: event.noteNumber, time: this.context.currentTime});
-                } else if (event.track == 5) {
-                    this.tenorSaxophone.stop({note: event.noteNumber, time: this.context.currentTime});
-                } else if (event.track == 6) {
-                    this.electricBass.stop({note: event.noteNumber, time: this.context.currentTime});
-                } else if (event.track == 7) {
-                    this.electricGuitar.stop({note: event.noteNumber, time: this.context.currentTime});
-                } else if (event.track == 8) {
-                    this.synthDrums.stop({note: event.noteNumber, time: this.context.currentTime});
+            //console.log(event);
+            
+            if (this.instruments["track" + event.track]) {
+                if (event.name == "Note on") {
+                    this.instruments["track" + event.track].start({note: event.noteName, time: this.context.currentTime, velocity: event.velocity});
+                } else if (event.name == "Note off") {
+                    this.instruments["track" + event.track].stop({note: event.noteNumber, time: this.context.currentTime});
+                } else if (event.name == "Controller Change") {
+                    this.instruments["track" + event.track].output.setVolume(event.value);
                 }
             }
         });
@@ -62,86 +34,38 @@ export default class AudioManager {
     
 
 
-    loadInstruments() {
+    loadInstruments(songID) {
         //Extremely long function to load all instruments needed (for now will only load enough for 1 song)
-        this.electricPiano = new Soundfont(this.context, {
-            instrument: "electric_grand_piano"
-        })
-        this.pianoVolume = 100;
-        this.tenorVolume = 100;
-        this.drumsVolume = 100;
-        this.electricPiano.load.then(() => {
-            console.log("Electric Piano loaded");
-            this.electricPiano.output.setVolume(this.pianoVolume)
-        });
+        this.instruments = {};
 
-        this.mutedTrumpet = new Soundfont(this.context, {
-            instrument: "muted_trumpet"
-        })
-        this.mutedTrumpet.load.then(() => {
-            console.log("Muted Trumpet loaded");
-        });
+        const song = data.songs.find(song => song.songId == songID);
 
-        this.trombone = new Soundfont(this.context, {
-            instrument: "trombone",
-            kit: "FluidR3_GM"
-        })
-        this.trombone.load.then(() => {
-            console.log("Trombone loaded");
-        });
+        if (!song) {
+            return console.log("Song not found");
+        }
 
-        this.trombone2 = new Soundfont(this.context, {
-            instrument: "trombone",
-            kit: "FluidR3_GM"
+        song.instruments.map((instrument, i) => {
+            //first track is constructor
+            const skipToFirstTrack = 2;
+            this.instruments["track" + (i + skipToFirstTrack)] = new Soundfont(this.context, {
+                instrument: instrument.name
+            });
+            this.instruments["track" + (i + skipToFirstTrack)].load.then(() => {
+                console.log(instrument.name + " loaded");
+                this.instruments["track" + (i + skipToFirstTrack)].output.setVolume(instrument.volume);
+            })
         })
-        this.trombone2.load.then(() => {
-            console.log("Trombone2 loaded");
-        });
-
-        this.tenorSaxophone = new Soundfont(this.context, {
-            instrument: "tenor_sax"
-        })
-        this.tenorSaxophone.load.then(() => {
-            console.log("Tenor Saxophone loaded");
-        });
-
-        this.electricBass = new Soundfont(this.context, {
-            instrument: "electric_bass_finger"
-        })
-        this.electricBass.load.then(() => {
-            console.log("Electric Bass loaded");
-        });
-
-        this.electricGuitar = new Soundfont(this.context, {
-            instrument: "electric_guitar_jazz"
-        })
-        this.electricGuitar.load.then(() => {
-            console.log("Electric Guitar loaded");
-        });
-
-        this.synthDrums = new Soundfont(this.context, {
-            instrument: "synth_drum"
-        })
-        this.synthDrums.load.then(() => {
-            console.log("Synth Drums loaded");
-        });
+        console.log(this.instruments);
     }
 
-
-    loadSong(path) {
+    loadSong(path, songID) {
         fetch(path)
             .then(response => response.arrayBuffer())
             .then(arrayBuffer => {
                 this.player.loadArrayBuffer(arrayBuffer);
+                this.loadInstruments(songID);
         })
     }
-
-    changeAudio(percentage) {
-        this.electricPiano.output.setVolume(this.pianoVolume * percentage);
-        this.tenorSaxophone.output.setVolume(this.tenorVolume * percentage);
-        this.synthDrums.output.setVolume(this.drumsVolume * percentage);
-    }
-
 
     setTempo(tempo) {
         this.player.pause();

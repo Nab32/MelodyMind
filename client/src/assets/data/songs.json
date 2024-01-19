@@ -1,0 +1,194 @@
+{
+    "songs": [{
+        "songId": 1,
+        "songName": "Gusty Garden",
+        "instruments": [
+            {
+               "name": "oboe",
+               "volume": 100 
+            },
+            {
+                "name": "clarinet",
+                "volume": 100
+            },
+            {
+                "name": "flute",
+                "volume": 100
+            },
+            {
+                "name": "string_ensemble_1",
+                "volume": 100
+            },
+            {
+                "name": "synth_strings_2",
+                "volume": 100
+            },
+            {
+                "name": "pizzicato_strings",
+                "volume": 127
+            },
+            {
+                "name": "string_ensemble_1",
+                "volume": 100
+            },
+            {
+                "name": "french_horn",
+                "volume": 127
+            },
+            {
+                "name": "trumpet",
+                "volume": 100
+            },
+            {
+                "name": "trombone",
+                "volume": 127
+            },
+            {
+                "name": "string_ensemble_1",
+                "volume": 100
+            },
+            {
+                "name": "string_ensemble_1",
+                "volume": 100
+            },
+            {
+                "name": "acoustic_guitar_steel",
+                "volume": 100
+            },
+            {
+                "name": "orchestral_harp",
+                "volume": 127
+            },
+            {
+                "name": "timpani",
+                "volume": 100
+            }
+        ]
+    },
+    {
+        "songId": 2,
+        "songName": "Super Mario Bros. Theme",
+        "instruments": [
+            {
+                "name": "steel_drums",
+                "volume": 100
+            },
+            {
+                "name": "fretless_bass",
+                "volume": 100
+            },
+            {
+                "name": "alto_sax",
+                "volume": 100
+            },
+            {
+                "name": "brass_section",
+                "volume": 100
+            },
+            {
+                "name": "synth_drum",
+                "volume": 100
+            }
+        ]
+
+    },
+    {
+        "songId": 3,
+        "songName": "Fountain of Dreams",
+        "instruments": [
+            {
+                "name": "oboe",
+                "volume": 100
+            },
+            {
+                "name": "clarinet",
+                "volume": 100
+            },
+            {
+                "name": "string_ensemble_1",
+                "volume": 100
+            },
+            {
+                "name": "flute",
+                "volume": 100
+            },
+            {
+                "name": "flute",
+                "volume": 100
+            },
+            {
+                "name": "timpani",
+                "volume": 100
+            },
+            {
+                "name": "timpani",
+                "volume": 100
+            },
+            {
+                "name": "acoustic_grand_piano",
+                "volume": 100
+            },
+            {
+                "name": "pizzicato_strings",
+                "volume": 100
+            },
+            {
+                "name": "pizzicato_strings",
+                "volume": 100
+            },
+            {
+                "name": "string_ensemble_1",
+                "volume": 100
+            },
+            {
+                "name": "string_ensemble_1",
+                "volume": 100
+            },
+            {
+                "name": "tremolo_strings",
+                "volume": 100
+            },
+            {
+                "name": "contrabass",
+                "volume": 100
+            },
+            {
+                "name": "trombone",
+                "volume": 127
+            },
+            {
+                "name": "trombone",
+                "volume": 127
+            },
+            {
+                "name": "synth_drum",
+                "volume": 100
+            },
+            {
+                "name": "synth_drum",
+                "volume": 100
+            },
+            {
+                "name": "oboe",
+                "volume": 100
+            },
+            {
+                "name": "trumpet",
+                "volume": 100
+            },
+            {
+                "name": "french_horn",
+                "volume": 100
+            },
+            {
+                "name": "french_horn",
+                "volume": 100
+            },
+            {
+                "name": "orchestra_hit",
+                "volume": 100
+            }
+        ]
+    }
+    ]
+}

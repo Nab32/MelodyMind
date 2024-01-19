@@ -14,6 +14,7 @@ const MODEL_CONFIG = {
 export default class ModelManager {
     constructor() {
         this.model = null;
+        this.allAngles = [];
     }
 
     /*
@@ -88,5 +89,45 @@ export default class ModelManager {
         } else {
             return null;
         }
+    }
+
+    getAngle(x1, y1, x2, y2, x3, y3) {
+        var pointA = { x: x1, y: y1 };
+        var pointB = { x: x2, y: y2 }; // Common point
+        var pointC = { x: x3, y: y3 };
+
+        // Calculate vectors AB and BC
+        var vectorAB = { x: pointB.x - pointA.x, y: pointB.y - pointA.y };
+        var vectorBC = { x: pointC.x - pointB.x, y: pointC.y - pointB.y };
+
+        // Calculate dot product and magnitudes
+        var dotProduct = vectorAB.x * vectorBC.x + vectorAB.y * vectorBC.y;
+        var magnitudeAB = Math.sqrt(vectorAB.x * vectorAB.x + vectorAB.y * vectorAB.y);
+        var magnitudeBC = Math.sqrt(vectorBC.x * vectorBC.x + vectorBC.y * vectorBC.y);
+
+        // Calculate the angle in radians
+        var cosineTheta = dotProduct / (magnitudeAB * magnitudeBC);
+        var angleInRadians = Math.acos(cosineTheta);
+
+        // Convert the angle to degrees
+        var angleInDegrees = angleInRadians * (180 / Math.PI);
+        this.allAngles.push(angleInDegrees);
+        return angleInDegrees;
+    }
+
+    getTempo() {
+        
+          let sum = 0;
+        
+          for (let i = 1; i < this.allAngles.length; i++) {
+            sum += this.allAngles[i] - this.allAngles[i - 1];
+          }
+        
+          const averageAngleChange = sum / (this.allAngles.length - 1);
+          
+          console.log(averageAngleChange);
+          this.allAngles = [];
+
+          return averageAngleChange;
     }
 }

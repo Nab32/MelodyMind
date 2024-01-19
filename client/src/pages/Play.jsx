@@ -23,6 +23,7 @@ function Play() {
     const modelManagerRef = useRef(null);
     const modelRendererRef = useRef(null);
     const audioManagerRef = useRef(null);
+    const [positions, setPositions] = useState([]);
 
     let lastTimestep = 0;
     
@@ -36,7 +37,7 @@ function Play() {
             setLoading(false);
         };
         loadModel();
-        audioManagerRef.current.loadSong("/overworldZelda.mid");
+        audioManagerRef.current.loadSong("/mario_theme.mid", 2);
         handleFrame();
     }, []);
 
@@ -48,11 +49,11 @@ function Play() {
                 modelManagerRef.current.getKeypoints(wantedKeypoints, webcamRef.current.video).then((keypoints) => {
                     console.log(keypoints);
                 });
-                console.log(tempo);
                 const randomValue = Math.random() * 60 + 100;
                 setTempo(parseInt(randomValue));
+                console.log(modelManagerRef.current.getTempo())
                 //audioManagerRef.current.setTempo(tempo);
-              }, 500); // 200 milliseconds interval (5 times per second)
+              }, 1000); // 200 milliseconds interval (5 times per second)
           
               // Cleanup function to clear the interval when the component is unmounted
               return () => clearInterval(intervalId);      
@@ -84,6 +85,14 @@ function Play() {
             .then((keypoints) => {
                 if (keypoints) {
                     modelRendererRef.current.renderKeypoints(keypoints, COLORS.BLUE);
+
+                    const right_elbow = keypoints.find(keypoint => keypoint.name === "right_elbow");
+                    const right_wrist = keypoints.find(keypoint => keypoint.name === "right_wrist");
+                    const right_shoulder = keypoints.find(keypoint => keypoint.name === "right_shoulder");
+
+                    modelManagerRef.current.getAngle(right_elbow.x, right_elbow.y, right_wrist.x, right_wrist.y, right_shoulder.x, right_shoulder.y)
+                    //console.log();
+
                 } else {
                     console.log("No keypoints found");
                 }
