@@ -92,25 +92,31 @@ export default class ModelManager {
     }
 
     getAngle(x1, y1, x2, y2, x3, y3) {
-        var pointA = { x: x1, y: y1 };
-        var pointB = { x: x2, y: y2 }; // Common point
-        var pointC = { x: x3, y: y3 };
+        // Calculate vectors
+        const vector1 = { x: x1 - x2, y: y1 - y2 };
+        const vector2 = { x: x3 - x2, y: y3 - y2 };
 
-        // Calculate vectors AB and BC
-        var vectorAB = { x: pointB.x - pointA.x, y: pointB.y - pointA.y };
-        var vectorBC = { x: pointC.x - pointB.x, y: pointC.y - pointB.y };
+        // Calculate dot product
+        const dotProduct = vector1.x * vector2.x + vector1.y * vector2.y;
 
-        // Calculate dot product and magnitudes
-        var dotProduct = vectorAB.x * vectorBC.x + vectorAB.y * vectorBC.y;
-        var magnitudeAB = Math.sqrt(vectorAB.x * vectorAB.x + vectorAB.y * vectorAB.y);
-        var magnitudeBC = Math.sqrt(vectorBC.x * vectorBC.x + vectorBC.y * vectorBC.y);
+        // Calculate magnitudes
+        const magnitude1 = Math.sqrt(vector1.x * vector1.x + vector1.y * vector1.y);
+        const magnitude2 = Math.sqrt(vector2.x * vector2.x + vector2.y * vector2.y);
 
-        // Calculate the angle in radians
-        var cosineTheta = dotProduct / (magnitudeAB * magnitudeBC);
-        var angleInRadians = Math.acos(cosineTheta);
+        // Calculate cosine of the angle
+        const cosAngle = dotProduct / (magnitude1 * magnitude2);
 
-        // Convert the angle to degrees
-        var angleInDegrees = angleInRadians * (180 / Math.PI);
+        // Calculate angle in radians
+        let angleInRadians = Math.acos(cosAngle);
+
+        // Convert radians to degrees
+        let angleInDegrees = (angleInRadians * 180) / Math.PI;
+
+        // Check the orientation of the angle (clockwise or counterclockwise)
+        const crossProduct = vector1.x * vector2.y - vector1.y * vector2.x;
+        if (crossProduct < 0) {
+            angleInDegrees = 360 - angleInDegrees;
+        }
         this.allAngles.push(angleInDegrees);
         return angleInDegrees;
     }

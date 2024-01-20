@@ -24,8 +24,11 @@ function Play() {
     const modelRendererRef = useRef(null);
     const audioManagerRef = useRef(null);
     const [positions, setPositions] = useState([]);
-
+    var lastValue = 0;
+    var isGoingDown = false;
     let lastTimestep = 0;
+    var timeMoving = 0;
+    var noiseCheck = 0;
     
 
     useEffect(() => {
@@ -37,7 +40,7 @@ function Play() {
             setLoading(false);
         };
         loadModel();
-        audioManagerRef.current.loadSong("/mario_theme.mid", 2);
+        audioManagerRef.current.loadSong("/G_garden.mid", 1);
         handleFrame();
     }, []);
 
@@ -45,15 +48,19 @@ function Play() {
     useEffect(() => {
         if (playing){
             const intervalId = setInterval(() => {
-                const imageSrc = webcamRef.current.video;
-                modelManagerRef.current.getKeypoints(wantedKeypoints, webcamRef.current.video).then((keypoints) => {
-                    console.log(keypoints);
-                });
-                const randomValue = Math.random() * 60 + 100;
-                setTempo(parseInt(randomValue));
-                console.log(modelManagerRef.current.getTempo())
-                //audioManagerRef.current.setTempo(tempo);
-              }, 1000); // 200 milliseconds interval (5 times per second)
+                
+                //console.log(modelManagerRef.current.getTempo())
+                //console.log()
+                if (tempo > 200) {
+                    setTempo(200);
+                } else if (tempo < 30) {
+                    setTempo(30);
+                } else if (tempo > 300) {
+                    setTempo(0);
+                }
+                console.log("Tempo current: " + tempo);
+                audioManagerRef.current.setTempo(parseInt(tempo));
+              }, 300); // 200 milliseconds interval (5 times per second)
           
               // Cleanup function to clear the interval when the component is unmounted
               return () => clearInterval(intervalId);      
@@ -90,7 +97,9 @@ function Play() {
                     const right_wrist = keypoints.find(keypoint => keypoint.name === "right_wrist");
                     const right_shoulder = keypoints.find(keypoint => keypoint.name === "right_shoulder");
 
-                    modelManagerRef.current.getAngle(right_elbow.x, right_elbow.y, right_wrist.x, right_wrist.y, right_shoulder.x, right_shoulder.y)
+                    var currentAngle = modelManagerRef.current.getAngle(right_wrist.x, right_wrist.y, right_elbow.x, right_elbow.y, right_shoulder.x, right_shoulder.y);
+                    getMovementTime(currentAngle);
+                    //console.log(modelManagerRef.current.getAngle(right_wrist.x, right_wrist.y, right_elbow.x, right_elbow.y, right_shoulder.x, right_shoulder.y))
                     //console.log();
 
                 } else {
@@ -107,6 +116,33 @@ function Play() {
         height: WEBCAM_HEIGHT,
         facingMode: "user"
     };
+
+    const getMovementTime = (currentAngle) => {
+        if (isGoingDown) {
+            if (lastValue < currentAngle) {
+                timeMoving++;
+                noiseCheck = 0;
+            } else {
+                timeMoving++;
+                noiseCheck++;
+            }
+        } else {
+            if (lastValue > currentAngle) {
+                timeMoving++;
+                noiseCheck = 0;
+            } else {
+                timeMoving++;
+                noiseCheck++;
+            }
+        }
+        if (noiseCheck > 2) {
+            noiseCheck = 0;
+            setTempo(1/timeMoving * 2300);
+            isGoingDown = !isGoingDown;
+            timeMoving = 0;
+        }
+        lastValue = currentAngle;
+    }
 
 
   return (
