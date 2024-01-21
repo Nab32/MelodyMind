@@ -40,7 +40,7 @@ function Play() {
             setLoading(false);
         };
         loadModel();
-        audioManagerRef.current.loadSong("/G_garden.mid", 1);
+        audioManagerRef.current.loadSong("/imperial_march.mid", 4);
         handleFrame();
     }, []);
 
@@ -48,16 +48,6 @@ function Play() {
     useEffect(() => {
         if (playing){
             const intervalId = setInterval(() => {
-                
-                //console.log(modelManagerRef.current.getTempo())
-                //console.log()
-                if (tempo > 200) {
-                    setTempo(200);
-                } else if (tempo < 30) {
-                    setTempo(30);
-                } else if (tempo > 300) {
-                    setTempo(0);
-                }
                 console.log("Tempo current: " + tempo);
                 audioManagerRef.current.setTempo(parseInt(tempo));
               }, 300); // 200 milliseconds interval (5 times per second)
@@ -137,7 +127,16 @@ function Play() {
         }
         if (noiseCheck > 2) {
             noiseCheck = 0;
-            setTempo(1/timeMoving * 2300);
+            var value = ((-25/4) * timeMoving) + 217.5;
+            if (value > 200) {
+                setTempo(200);
+            } else if (value < 30) {
+                setTempo(30);
+            } else if (value > 300) {
+                setTempo(0);
+            } else {
+                setTempo(value);
+            }
             isGoingDown = !isGoingDown;
             timeMoving = 0;
         }
@@ -162,6 +161,14 @@ function Play() {
             audioManagerRef.current.play()
             setPlaying(true);
         }}>Play audio</button>
+        {
+            playing ? (
+            <div>
+                <h1>Wanted Tempo: {audioManagerRef.current.wantedTempo}</h1>
+                <h1>Tempo: {tempo}</h1>
+            </div>
+            ) : null
+        }
         <button onClick={() => audioManagerRef.current.setTempo(60)}>Set tempo</button>
         <button onClick={() => audioManagerRef.current.setTempo(170)}>up tempo</button>
         <button onClick={() => setTempo(tempo+1)}>Test</button>

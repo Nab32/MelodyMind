@@ -63,7 +63,8 @@
                 "name": "timpani",
                 "volume": 100
             }
-        ]
+        ],
+        "tempo": 152
     },
     {
         "songId": 2,
@@ -89,7 +90,8 @@
                 "name": "synth_drum",
                 "volume": 100
             }
-        ]
+        ],
+        "tempo": 100
 
     },
     {
@@ -188,7 +190,8 @@
                 "name": "orchestra_hit",
                 "volume": 100
             }
-        ]
+        ],
+        "tempo": 162
     },
     {
         "songId": 4,
@@ -258,7 +261,8 @@
                 "name": "string_ensemble_1",
                 "volume": 100
             }
-        ]  
+        ],
+        "tempo": 105
     }
     ]
 }

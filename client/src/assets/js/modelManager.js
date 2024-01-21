@@ -120,20 +120,4 @@ export default class ModelManager {
         this.allAngles.push(angleInDegrees);
         return angleInDegrees;
     }
-
-    getTempo() {
-        
-          let sum = 0;
-        
-          for (let i = 1; i < this.allAngles.length; i++) {
-            sum += this.allAngles[i] - this.allAngles[i - 1];
-          }
-        
-          const averageAngleChange = sum / (this.allAngles.length - 1);
-          
-          console.log(averageAngleChange);
-          this.allAngles = [];
-
-          return averageAngleChange;
-    }
 }

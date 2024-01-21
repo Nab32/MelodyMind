@@ -8,21 +8,19 @@ export default class AudioManager {
             //console.log(event);
         });
         this.context = new AudioContext();
+        this.wantedTempo = 0;
         
         this.player.on('fileLoaded', function() {
             console.log("FILE WAS LOADED");
         })
 
         this.player.on('midiEvent', (event) => {
-            //console.log(event);
             
             if (this.instruments["track" + event.track]) {
                 if (event.name == "Note on") {
                     this.instruments["track" + event.track].start({note: event.noteName, time: this.context.currentTime, velocity: event.velocity});
                 } else if (event.name == "Note off") {
                     this.instruments["track" + event.track].stop({note: event.noteNumber, time: this.context.currentTime});
-                } else if (event.name == "Controller Change") {
-                    this.instruments["track" + event.track].output.setVolume(event.value);
                 }
             }
         });
@@ -43,6 +41,8 @@ export default class AudioManager {
         if (!song) {
             return console.log("Song not found");
         }
+
+        this.wantedTempo = song.tempo;
 
         song.instruments.map((instrument, i) => {
             //first track is constructor
