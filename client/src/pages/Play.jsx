@@ -40,7 +40,7 @@ function Play() {
             setLoading(false);
         };
         loadModel();
-        audioManagerRef.current.loadSong("/imperial_march.mid", 4);
+        audioManagerRef.current.loadSong("/JENOVA.midi", 5);
         handleFrame();
     }, []);
 
@@ -50,7 +50,7 @@ function Play() {
             const intervalId = setInterval(() => {
                 console.log("Tempo current: " + tempo);
                 audioManagerRef.current.setTempo(parseInt(tempo));
-              }, 300); // 200 milliseconds interval (5 times per second)
+              }, 100); // 200 milliseconds interval (5 times per second)
           
               // Cleanup function to clear the interval when the component is unmounted
               return () => clearInterval(intervalId);      

@@ -15,7 +15,6 @@ export default class AudioManager {
         })
 
         this.player.on('midiEvent', (event) => {
-            
             if (this.instruments["track" + event.track]) {
                 if (event.name == "Note on") {
                     this.instruments["track" + event.track].start({note: event.noteName, time: this.context.currentTime, velocity: event.velocity});
@@ -48,7 +47,8 @@ export default class AudioManager {
             //first track is constructor
             const skipToFirstTrack = 2;
             this.instruments["track" + (i + skipToFirstTrack)] = new Soundfont(this.context, {
-                instrument: instrument.name
+                instrument: instrument.name,
+                kit: "FluidR3_GM"
             });
             this.instruments["track" + (i + skipToFirstTrack)].load.then(() => {
                 console.log(instrument.name + " loaded");
@@ -71,5 +71,8 @@ export default class AudioManager {
         this.player.pause();
         this.player.tempo = tempo;
         this.player.play();
+    }
+
+    getInstrumentNames() {
     }
 }
