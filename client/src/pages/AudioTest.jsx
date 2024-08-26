@@ -12,8 +12,6 @@ import { DrumMachine, getDrumMachineNames } from "smplr";
 
 function AudioTest() {
 
-
-
     // Drum samples could have variations:
     const audioManagerRef = useRef(null);
 
@@ -22,7 +20,7 @@ function AudioTest() {
 
         audioManagerRef.current = new AudioManager();
 
-        await audioManagerRef.current.loadSong("/JENOVA.midi", 5);
+        await audioManagerRef.current.loadSong("/G_garden.mid", 1);
         console.log("test")
       }
 
@@ -32,6 +30,7 @@ function AudioTest() {
   return (
     <div>
         <button onClick={() => audioManagerRef.current.play()}>Play</button>
+        <h1 className="text-3xl font-bold underline">Testing</h1>
     </div>
   )
 }

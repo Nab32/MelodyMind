@@ -169,9 +169,6 @@ function Play() {
             </div>
             ) : null
         }
-        <button onClick={() => audioManagerRef.current.setTempo(60)}>Set tempo</button>
-        <button onClick={() => audioManagerRef.current.setTempo(170)}>up tempo</button>
-        <button onClick={() => setTempo(tempo+1)}>Test</button>
     </div>
   )
 }

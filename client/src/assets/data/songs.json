@@ -306,5 +306,40 @@
             }
         ],
         "tempo": 179
+    },
+    {
+       "songId": 6,
+       "songName": "Zelda Overworld Jazz",
+       "instruments": [
+            {
+                "name": "electric_piano_1",
+                "volume": 100
+            },
+            {
+                "name": "muted_trumpet",
+                "volume": 100
+            },
+            {
+                "name": "trombone",
+                "volume": 200
+            },
+            {
+                "name": "tenor_sax",
+                "volume": 100
+            },
+            {
+                "name": "electric_bass_finger",
+                "volume": 100
+            },
+            {
+                "name": "electric_guitar_jazz",
+                "volume": 100
+            },
+            {
+                "name": "synth_drum",
+                "volume": 100
+            }
+       ],
+        "tempo": 150
     }]
 }
