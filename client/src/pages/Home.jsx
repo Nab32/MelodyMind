@@ -1,59 +1,20 @@
-import React from 'react'
+import React from "react";
 
 function Home() {
   return (
-
- <>
-      <div className="navbar rounded-lg">
-        <div className="dropdown">
-          <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h16M4 18h7"
-              />
-            </svg>
-          </div>
-          <ul
-            tabIndex={0}
-            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
-          >
-            <li>
-              <a>Homepage</a>
-            </li>
-            <li>
-              <a href="#about">About</a>
-            </li>
-            <li>
-              <a href="/play">Play</a>
-            </li>
-          </ul>
-        </div>
-        <div className="flex-1">
-          <a className="btn btn-ghost text-xl">Melody Mind</a>
-        </div>
-      </div>
-
-      <div class="diff aspect-[16/9]">
-        <div class="diff-item-1">
-          <div class="bg-primary text-primary-content text-9xl font-black grid place-content-center">
+    <>
+      <div className="diff aspect-[16/9]">
+        <div className="diff-item-1">
+          <div className="bg-primary text-primary-content text-9xl font-black grid place-content-center">
             MELODY MIND
           </div>
         </div>
-        <div class="diff-item-2">
-          <div class="bg-base-200 text-9xl font-black grid place-content-center">
+        <div className="diff-item-2">
+          <div className="bg-base-200 text-9xl font-black grid place-content-center">
             MELODY MIND
           </div>
         </div>
-        <div class="diff-resizer"></div>
+        <div className="diff-resizer"></div>
       </div>
 
       <div className="flex items-center justify-center p-10 bg-base-200">
@@ -75,33 +36,39 @@ function Home() {
                 orchestra conductor. Melody Mind is a music game that helps you
                 learn music rhythm in a fun and interactive way.
               </p>
-              <button className="btn btn-primary"><a href="/play">Play</a></button>
+              <button className="btn btn-primary">
+                <a href="/selectgame">Play</a>
+              </button>
             </div>
           </div>
         </div>
       </div>
 
-
-<div id="about" className="flex items-center gap-16">
-      <div className="hero min-h-screen w-8/12 bg-base-200">
-        <div className="hero-content flex-col lg:flex-row-reverse">
-          <img
-            src="https://i.pinimg.com/736x/39/9c/a1/399ca1b61704dfa0fe44537f5fb4462a.jpg"
-            className="max-w-sm rounded-lg shadow-2xl"
-          />
-          <div>
-            <h1 className="text-5xl font-bold">About</h1>
-            <p className="py-6">
-              MelodyMind is a project made using mainly React and Javascript. It
-              uses AI to detect the user's hand movements and plays the music
-              accordingly. The project is still in development and will be
-              released soon.
-            </p>
-            <button className="btn btn-primary">More about me</button>
+      <div id="about" className="flex items-center gap-16">
+        <div className="hero min-h-screen w-8/12 bg-base-200">
+          <div className="hero-content flex-col lg:flex-row-reverse">
+            <img
+              src="https://i.pinimg.com/736x/39/9c/a1/399ca1b61704dfa0fe44537f5fb4462a.jpg"
+              className="max-w-sm rounded-lg shadow-2xl"
+            />
+            <div>
+              <h1 className="text-5xl font-bold">About</h1>
+              <p className="py-6">
+                MelodyMind is a project made using mainly React and Javascript.
+                It uses AI to detect the user's hand movements and plays the
+                music accordingly. The project is still in development and will
+                be released soon.
+              </p>
+              <button className="btn btn-primary">More about me</button>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="artboard phone-1"><img src="https://us.images.westend61.de/0001387467pw/vertical-photo-of-a-saxophonist-bearded-and-with-blonde-hair-playing-in-the-street-CAVF83364.jpg" className="w-[320px] h-[568px] object-cover rounded-lg"/></div>
+        <div className="artboard phone-1">
+          <img
+            src="https://us.images.westend61.de/0001387467pw/vertical-photo-of-a-saxophonist-bearded-and-with-blonde-hair-playing-in-the-street-CAVF83364.jpg"
+            className="w-[320px] h-[568px] object-cover rounded-lg"
+          />
+        </div>
       </div>
       <footer className="footer items-center p-4 bg-neutral text-neutral-content">
         <aside className="items-center grid-flow-col">
@@ -158,4 +125,4 @@ function Home() {
   );
 }
 
-export default Home
+export default Home;

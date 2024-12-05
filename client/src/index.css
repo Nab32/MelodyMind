@@ -1,3 +1,45 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --anim-duration: 3s;
+}
+
+.emojis {
+  display: flex;
+  font-size: 120px;
+  gap: 250px;
+}
+
+.guitar, .sax, .piano {
+  display: inline-block;
+  animation: wave;
+  animation-duration: var(--anim-duration);
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes wave {
+  0% {
+    transform: rotate(310deg);
+  }
+  50% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(310deg);
+  }
+}
+
+@keyframes scaleUpDown {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

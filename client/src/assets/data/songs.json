@@ -2,6 +2,7 @@
     "songs": [{
         "songId": 1,
         "songName": "Gusty Garden",
+        "songFile": "G_garden.mid",
         "instruments": [
             {
                "name": "oboe",
@@ -69,6 +70,7 @@
     {
         "songId": 2,
         "songName": "Super Mario Bros. Theme",
+        "songFile": "mario_theme.mid",
         "instruments": [
             {
                 "name": "steel_drums",
@@ -97,6 +99,7 @@
     {
         "songId": 3,
         "songName": "Fountain of Dreams",
+        "songFile": "FoD.mid",
         "instruments": [
             {
                 "name": "oboe",
@@ -196,6 +199,7 @@
     {
         "songId": 4,
         "songName": "Imperial March",
+        "songFile": "imperial_march.mid",
         "instruments": [
             {
                 "name": "piccolo",
@@ -267,6 +271,7 @@
     {
         "songId": 5,
         "songName": "JENOVA",
+        "songFile": "JENOVA.midi",
         "instruments": [
             {
                 "name": "electric_piano_1",
@@ -310,6 +315,7 @@
     {
        "songId": 6,
        "songName": "Zelda Overworld Jazz",
+       "songFile": "overworldZelda.mid",
        "instruments": [
             {
                 "name": "electric_piano_1",

@@ -7,8 +7,3 @@ canvas {
     width: 500px;
     transition: all 0.5s ease;
 }
-
-canvas:hover {
-    scale: 0.8;
-    background-color: orange;
-}

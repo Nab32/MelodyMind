@@ -1,0 +1,8 @@
+export const Songs = {
+    GUSTY_GARDEN: 1,
+    SUPER_MARIO_BROS_THEME: 2,
+    FOUNTAIN_OF_DREAMS: 3,
+    IMPERIAL_MARCH: 4,
+    JENOVA: 5,
+    ZELDA_OVERWORLD_JAZZ: 6
+}

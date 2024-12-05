@@ -29,42 +29,48 @@ export default class AudioManager {
         this.player.play();
     }
     
-
+    getSongPercent() {
+        return this.player.getSongPercentRemaining();
+    }
 
     loadInstruments(songID) {
-        //Extremely long function to load all instruments needed (for now will only load enough for 1 song)
         this.instruments = {};
-
+    
         const song = data.songs.find(song => song.songId == songID);
-
+    
         if (!song) {
             return console.log("Song not found");
         }
-
+    
         this.wantedTempo = song.tempo;
-
-        song.instruments.map((instrument, i) => {
-            //first track is constructor
+    
+        // Create an array of promises for loading instruments
+        const loadPromises = song.instruments.map((instrument, i) => {
             const skipToFirstTrack = 2;
-            this.instruments["track" + (i + skipToFirstTrack)] = new Soundfont(this.context, {
+            const trackName = "track" + (i + skipToFirstTrack);
+            this.instruments[trackName] = new Soundfont(this.context, {
                 instrument: instrument.name,
                 kit: "FluidR3_GM"
             });
-            this.instruments["track" + (i + skipToFirstTrack)].load.then(() => {
+    
+            return this.instruments[trackName].load.then(() => {
                 console.log(instrument.name + " loaded");
-                this.instruments["track" + (i + skipToFirstTrack)].output.setVolume(instrument.volume);
-            })
-        })
-        console.log(this.instruments);
+                this.instruments[trackName].output.setVolume(instrument.volume);
+            });
+        });
+    
+        // Return a promise that resolves when all instruments are loaded
+        return Promise.all(loadPromises).then(() => {
+            console.log(this.instruments);
+        });
     }
 
-    loadSong(path, songID) {
-        fetch(path)
-            .then(response => response.arrayBuffer())
-            .then(arrayBuffer => {
-                this.player.loadArrayBuffer(arrayBuffer);
-                this.loadInstruments(songID);
-        })
+    async loadSong(path, songID) {
+        const response = await fetch(path);
+        const arrayBuffer = await response.arrayBuffer();
+        this.player.loadArrayBuffer(arrayBuffer);
+        
+        await this.loadInstruments(songID);  // Wait for instruments to load
     }
 
     setTempo(tempo) {

@@ -1,35 +1,31 @@
 import React, {useEffect, useRef, useState} from 'react'
-import Webcam from 'react-webcam';
 import '../assets/css/Play.css';
-import * as poseDetection from '@tensorflow-models/pose-detection';
-import * as tf from '@tensorflow/tfjs-core';
 import '@tensorflow/tfjs-backend-webgl';
-import ModelManager from '../assets/js/modelManager';
-import ModelRenderer from '../assets/js/modelRenderer';
 import AudioManager from '../assets/js/audioManager';
-import { WEBCAM_HEIGHT, WEBCAM_WIDTH, COLORS, FPS } from '../assets/js/consts';
-import { DrumMachine, getDrumMachineNames } from "smplr";
+import { Songs } from '../constants/songs';
 
 function AudioTest() {
 
-    // Drum samples could have variations:
-    const audioManagerRef = useRef(null);
+  const audioManagerRef = useRef(null);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
+  useEffect(() => {
       async function loadAudio() {
-
-        audioManagerRef.current = new AudioManager();
-
-        await audioManagerRef.current.loadSong("/G_garden.mid", 1);
-        console.log("test")
+          audioManagerRef.current = new AudioManager();
+          await audioManagerRef.current.loadSong("/mario_theme.mid", Songs.SUPER_MARIO_BROS_THEME);
+          setLoading(false); // Set loading to false when everything is loaded
       }
 
       loadAudio();
-    }, []);
+  }, []);
+
+  if (loading) {
+      return <div>Loading...</div>; // Show this message while loading
+  }
 
   return (
     <div>
-        <button onClick={() => audioManagerRef.current.play()}>Play</button>
+        <button className="btn btn-accent" onClick={() => audioManagerRef.current.play()}>Play</button>
         <h1 className="text-3xl font-bold underline">Testing</h1>
     </div>
   )
